@@ -3,7 +3,7 @@ package](https://github.com/ManasJayanth/esy-packages-template/workflows/Build%2
 
 # ocaml
 
-`ocaml` is sample package, [`ocaml`](https://github.com/esy/test-ocaml-c), packaged for [`esy`](https://esy.sh/).
+`ocaml` is the [`ocaml`](https://github.com/ocaml/ocaml) compiler packaged for [`esy`](https://esy.sh/).
 
 ## Why
 `esy` can not only fetch and install Reason and OCaml libraries and tools,
