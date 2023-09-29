@@ -3,6 +3,6 @@
     "build": "which ocaml"
   },
   "dependencies": {
-    "ocaml": "*"
+    "ocaml": "5.1.0"
   }
 }
