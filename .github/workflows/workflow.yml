@@ -25,7 +25,7 @@ jobs:
           node-version: 14.x
 
       - name: Install esy, verdaccio and esy-package
-        run: npm install -g @esy-nightly/esy verdaccio esy-package@dev
+        run: npm install -g esy verdaccio esy-package@dev
 
       - name: Run end-to-end tests on the package 
         run: DEBUG=bale*,verdaccio* esy-package
