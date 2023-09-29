@@ -1,0 +1,8 @@
+{
+  "esy": {
+    "build": "which ocaml"
+  },
+  "dependencies": {
+    "ocaml": "*"
+  }
+}
