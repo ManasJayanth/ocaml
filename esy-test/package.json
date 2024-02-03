@@ -3,7 +3,7 @@
     "build": "which ocaml"
   },
   "dependencies": {
-    "ocaml": "5.1.4",
+    "ocaml": "5.1.1000",
     "@opam/topkg": ">=1.0.7",
     "@opam/melange": "*",
     "@opam/reason-react": ">=0.13.0"
