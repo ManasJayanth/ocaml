@@ -9,6 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
+          - macos-13
           - macos-latest
           - ubuntu-latest
           - windows-latest
@@ -19,15 +20,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use Node.js 14.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
+      - name: Use Node.js
+        uses: actions/setup-node@v4
 
-      - name: Install esy, verdaccio and esy-package
-        run: npm install -g esy verdaccio esy-package@dev
+      - name: Install esy and esy-package
+        run: npm install -g esy esy-package
 
-      - name: Run end-to-end tests on the package 
+      - name: Run end-to-end tests on the package
         run: DEBUG=bale*,verdaccio* esy-package
         shell: bash
         env:
