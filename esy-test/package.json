@@ -3,9 +3,12 @@
     "build": "which ocaml"
   },
   "dependencies": {
-    "ocaml": "5.1.1000",
+    "ocaml": "5.2.0",
     "@opam/topkg": ">=1.0.7",
-    "@opam/melange": "*",
+    "@opam/melange": "4.0.0-52",
     "@opam/reason-react": ">=0.13.0"
+  },
+  "resolutions": {
+    "ocaml": "5.2.0"
   }
 }

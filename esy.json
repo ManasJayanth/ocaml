@@ -1,8 +1,8 @@
 {
   "name": "ocaml",
-  "version": "5.1.1000",
+  "version": "5.2.0",
   "description": "OCaml compiler packaged for esy",
-  "source": "https://github.com/ocaml/ocaml/archive/5.1.1.tar.gz#sha256:57f7b382b3d71198413ede405d95ef3506f1cdc480cda1dca1e26b37cb090e17",
+  "source": "https://github.com/ocaml/ocaml/archive/5.2.0.tar.gz#sha256:48554abfd530fcdaa08f23f801b699e4f74c320ddf7d0bd56b0e8c24e55fc911",
   "override": {
     "build": [
       "#{os == 'windows' ? 'sh ./setup-flexdll': 'true'}",
