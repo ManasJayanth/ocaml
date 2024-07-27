@@ -6,7 +6,7 @@
   "override": {
     "build": [
       "#{os == 'windows' ? 'sh ./setup-flexdll': 'true'}",
-      "./configure --prefix #{self.install} #{os == 'windows' ? '--host=x86_64-w64-mingw32': ''}",
+      "./configure --prefix #{self.install} CFLAGS=-Os --enable-flambda LIBS=-static #{os == 'windows' ? '--host=x86_64-w64-mingw32': ''}",
       "make -j#{self.jobs}"
     ],
     "install": "make install",
