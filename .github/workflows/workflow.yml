@@ -32,7 +32,3 @@ jobs:
         env:
           SHELL: "bash.exe" # HACK!! For some weird reason, $SHELL in Github actions' Windows' bash shell doesn't set this environment variable. We rely on it to figure if path normalisation is necessary on Gitbash Windows
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: release
-          path: package.tar.gz
