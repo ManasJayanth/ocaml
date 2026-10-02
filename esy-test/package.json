@@ -10,9 +10,9 @@
     ]
   },
   "dependencies": {
-    "ocaml": "5.5.1"
+    "ocaml": "5.5.1000"
   },
   "resolutions": {
-    "ocaml": "5.5.1"
+    "ocaml": "5.5.1000"
   }
 }

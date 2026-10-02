@@ -155,6 +155,7 @@ Check out the [consumer test manifest](esy-test/package.json) and
 ## OCaml 5.5.1 package workflow
 
 The recipe pins the upstream OCaml 5.5.1 source archive and its SHA-256 checksum.
+The npm package version is `5.5.1000`; the compiler reports `5.5.1`.
 The following commands apply to this release.
 
 ### Build and test the package
@@ -223,11 +224,13 @@ Once published, consumers can depend on the release as follows:
 ```json
 {
   "dependencies": {
-    "ocaml": "5.5.1"
+    "ocaml": "5.5.1000"
   }
 }
 ```
 
 The source of truth is `esy.json`. When updating a release, change its version,
-source URL, and SHA-256 together, then update the version in
-`esy-test/package.json` and `esy-test/smoke.ml` and rerun `esy-package`.
+source URL, and SHA-256 together. Keep the npm package version in
+`esy-test/package.json` aligned with the recipe; keep the upstream compiler
+version in `esy-test/smoke.ml` aligned with what `ocamlc -version` reports.
+Then rerun the packaging wrapper above.
