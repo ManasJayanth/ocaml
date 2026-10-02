@@ -2,6 +2,7 @@ name: Build and test the esy package
 
 on:
   - push
+  - pull_request
 
 jobs:
   build:
@@ -9,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - macos-13
+          - macos-15-intel
           - macos-latest
           - ubuntu-latest
           - windows-latest
@@ -22,13 +23,19 @@ jobs:
 
       - name: Use Node.js
         uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Install esy and esy-package
-        run: npm install -g esy esy-package
+        run: npm install -g esy@0.9.2 esy-package@0.1.0-dev.60
 
       - name: Run end-to-end tests on the package
-        run: DEBUG=bale*,verdaccio* esy-package
+        run: node .github/run-esy-package.cjs "$(npm root -g)/esy-package"
         shell: bash
-        env:
-          SHELL: "bash.exe" # HACK!! For some weird reason, $SHELL in Github actions' Windows' bash shell doesn't set this environment variable. We rely on it to figure if path normalisation is necessary on Gitbash Windows
 
+      - name: Upload tested source package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ocaml-5.5.1-${{ matrix.os }}
+          path: package.tar.gz
+          if-no-files-found: error

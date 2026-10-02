@@ -1,11 +1,18 @@
 {
   "esy": {
-    "build": "which ocaml"
+    "build": [
+      "ocamlc -version",
+      "ocamlopt -version",
+      "ocamlc -I +unix -o smoke.byte unix.cma smoke.ml",
+      "ocamlrun ./smoke.byte",
+      "ocamlopt -I +unix -o smoke.exe unix.cmxa smoke.ml",
+      "./smoke.exe"
+    ]
   },
   "dependencies": {
-    "ocaml": "5.3.0"
+    "ocaml": "5.5.1"
   },
   "resolutions": {
-    "ocaml": "5.3.0"
+    "ocaml": "5.5.1"
   }
 }
