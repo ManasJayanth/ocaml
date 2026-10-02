@@ -1,6 +1,6 @@
 {
   "name": "ocaml",
-  "version": "5.5.1",
+  "version": "5.5.1000",
   "description": "OCaml compiler packaged for esy",
   "source": "https://github.com/ocaml/ocaml/archive/5.5.1.tar.gz#sha256:ae47728d0a876665ccc7b745e3a8d8c9ca5ba63c4f7a11d4db6cdbd1dbeef4bb",
   "override": {
