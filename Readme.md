@@ -1,139 +1,78 @@
-![Build and test the esy
-package](https://github.com/ManasJayanth/esy-packages-template/workflows/Build%20and%20test%20the%20esy%20package/badge.svg)
+# OCaml for esy
 
-# ocaml
+[OCaml](https://github.com/ocaml/ocaml) **5.5.1**, packaged for
+[esy](https://esy.sh/). The recipe in `esy.json` pins the upstream release
+archive and verifies its SHA-256 checksum. `esy-package` combines those sources,
+the build recipe, and the Windows helper in `files/` into an npm source package.
 
-`ocaml` is the [`ocaml`](https://github.com/ocaml/ocaml) compiler packaged for [`esy`](https://esy.sh/).
+## Build and test the package
 
-## Why
-`esy` can not only fetch and install Reason and OCaml libraries and tools,
-but also those written in C. This extends reproducibility benefits to
-packages written in C, like `skia`, `libffi`, `pkg-config`
-etc. Users don't have to install them separately, nor have to worry if
-they have installed the correct version. Read more at the docs about
-[benefits for opting for esy packages](https://esy.sh#TODO).
-
-## How to use `ocaml`?
-
-`ocaml` can be used from both NPM and directly from Github.
-
-### From NPM 
-
-`ocaml` is deployed on NPM can be found
-[here](https://www.npmjs.com/package/TODO).
-
-You can simply run `esy add ocaml` to install it, or specify it in
-`package.json` and run `esy`.
-
-```diff
-{
-  "dependencies": {
-+   "ocaml": "*"
-  }
-}
-```
-
-### Directly from Github
-
-```json
-{
-  "dependencies": {
-    "ocaml": "ManasJayanth/ocaml"
-  }
-}
-```
-
-i.e. `<GITHUB_ORG or USERNAME>/<REPO NAME>`
-
-To use a specific commit,
-
-```diff
-  "dependencies": {
-+   "ocaml": "esy-packages/ocaml#<commit hash>"
-  }
-```
-
-## How to package for esy?
-
-### For the experienced
-
-**The gist**
-Specify the configure and build commands in `esy.build` property of
-`esy.json` and the install step in `esy.install`. If the package
-builds "in source", set `esy.buildsInSource` property to `true`. Use
-`$cur__install` environment variable to set the install location.
-
-See [docs](TODO) for reference.
-
-The CI will take care of fetching the sources and creating an NPM
-package for you. See [script.js](TODO) to see how it works.
-
-You can download it or auto publish via CI.
-
-### For beginners
-
-> Note: you'll need Node.js for this tutorial. If you're experienced
-> with bash, you can use it instead.
-
-Fundamentally, packaging for esy works like in other Linux distros,
-except ofcourse, such that packages become available on MacOS and
-Windows too.
-
-You would typically have to specify the instructions to build the
-package in the `esy.json`. For example, everyone's favourite http
-tool, [curl](https://curl.se/), needs the following instructions ([as
-described on their website](https://curl.se/docs/install.html))
+Use Node.js 22 (the packaging tool's dependencies are incompatible with Node.js
+26), esy, and the platform's C compiler and `make`:
 
 ```sh
-./configure
-make
-make install
+npm install -g esy@0.9.2 esy-package@0.1.0-dev.60
+esy-package
 ```
 
-Many packages have similar instructions!
+This creates `package.tar.gz`, publishes it to a temporary local Verdaccio
+registry, and installs and builds it through esy. It does not publish to npmjs.org.
+The consumer in `esy-test/` compiles and runs both bytecode and native programs,
+checking the compiler version, multicore domains, marshaling, and the Unix
+library. CI runs this on macOS, Linux, and Windows.
 
-Configure and build steps are specified in the `esy.build` property in
-the `esy.json` and install steps in `esy.install`. Example,
+To generate only the source package:
 
-```json
-{
-  "esy": {
-    "build": [
-	  "./configure",
-	  "make"
-	],
-	"install": [
-	  "make install"
-	]
-  }
-}
+```sh
+esy-package package
 ```
 
+Windows builds fetch FlexDLL 0.43 and let the OCaml build bootstrap it. The
+compiler builds from source when installed; `package.tar.gz` is not a prebuilt
+binary distribution.
 
-## Testing and making sure the package works as expected 
+## Use the local package
 
-To test if the package works, we recommend an end-to-end test by
-publishing it to local
-[`verdaccio`](https://github.com/verdaccio/verdaccio), and using the
-package with a `package.json` or `esy.json` depends on it.
+Extract the generated archive somewhere outside this recipe checkout:
+
+```sh
+mkdir -p /tmp/ocaml-5.5.1-package
+tar -xzf package.tar.gz -C /tmp/ocaml-5.5.1-package
+```
+
+Then use that extracted package as the compiler in an esy project:
 
 ```json
 {
   "dependencies": {
-    ocaml": "*"
+    "ocaml": "file:/tmp/ocaml-5.5.1-package/package"
   }
 }
 ```
 
-And pointing `esy` to the local npm registry
+Run `esy`, then `esy ocamlc -version` or `esy ocamlopt -version`.
+The repository itself contains a packaging recipe, so use the generated package
+rather than pointing an esy compiler dependency at the recipe checkout.
+
+## Publish and consume from npm
+
+After reviewing the tarball and CI results, a maintainer with access to the
+`ocaml` npm package can publish it:
 
 ```sh
-esy i --npm-registry http://localhost:4873
-esy b
+npm publish ./package.tar.gz --registry https://registry.npmjs.org
 ```
 
-If the package is a library, it's a good idea to write a small program
-to actually check if the library works. Referring how the
-corresponding package is being tested in Homebrew or Arch Linux.
+Once published, consumers can depend on the release as follows:
 
-Checkout [ci-test.sh](./ci-test.sh) for reference, used on the CI.
+```json
+{
+  "dependencies": {
+    "ocaml": "5.5.1"
+  }
+}
+```
+
+The source of truth is `esy.json`. When updating a release, change its version,
+source URL, and SHA-256 together, then update the version in
+`esy-test/package.json` and `esy-test/smoke.ml` and rerun `esy-package`.
