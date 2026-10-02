@@ -12,7 +12,7 @@ Use Node.js 22 (the packaging tool's dependencies are incompatible with Node.js
 
 ```sh
 npm install -g esy@0.9.2 esy-package@0.1.0-dev.60
-esy-package
+node .github/run-esy-package.cjs "$(npm root -g)/esy-package"
 ```
 
 This creates `package.tar.gz`, publishes it to a temporary local Verdaccio
@@ -20,11 +20,14 @@ registry, and installs and builds it through esy. It does not publish to npmjs.o
 The consumer in `esy-test/` compiles and runs both bytecode and native programs,
 checking the compiler version, multicore domains, marshaling, and the Unix
 library. CI runs this on macOS, Linux, and Windows.
+Run these commands in Bash (Git Bash on Windows). The wrapper works around an
+archive-extraction path bug in the pinned `esy-package` on Windows; other
+platforms use the tool unchanged.
 
 To generate only the source package:
 
 ```sh
-esy-package package
+node .github/run-esy-package.cjs "$(npm root -g)/esy-package" package
 ```
 
 Windows builds fetch FlexDLL 0.43 and let the OCaml build bootstrap it. The
