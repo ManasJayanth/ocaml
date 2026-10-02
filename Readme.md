@@ -30,7 +30,7 @@ To generate only the source package:
 node .github/run-esy-package.cjs "$(npm root -g)/esy-package" package
 ```
 
-Windows builds fetch FlexDLL 0.43 and let the OCaml build bootstrap it. The
+Windows builds fetch FlexDLL 0.44 and let the OCaml build bootstrap it. The
 compiler builds from source when installed; `package.tar.gz` is not a prebuilt
 binary distribution.
 

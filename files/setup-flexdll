@@ -10,7 +10,7 @@ if [ -d "flexdll" ] && [ -f "flexdll/flexdll.c" ]; then
     echo "[Flexdll] Already present, no need to clone."
 else
     echo "[Flexdll] Cloning..."
-    git clone --branch 0.43 --depth 1 https://github.com/ocaml/flexdll.git flexdll
+    git clone --branch 0.44 --depth 1 https://github.com/ocaml/flexdll.git flexdll
     echo "[Flexdll] Clone successful!"
 fi
 # OCaml's normal build bootstraps FlexDLL when configured with --with-flexdll.
